@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cruise Ship Outbreak Analysis 2024-2025</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .chart-container { background: white; border-radius: 0.5rem; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .stat-card { background: white; border-radius: 0.5rem; padding: 1rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+        
+        /* Custom styles for our visualizations */
+        .outbreak-circle { transition: all 0.3s ease; }
+        .outbreak-circle:hover { transform: scale(1.1); }
+        
+        .platform-bar { 
+            height: 20px; 
+            border-radius: 4px; 
+            margin: 4px 0; 
+            transition: all 0.3s ease;
+        }
+        .platform-bar:hover { transform: scale(1.02); }
+        
+        .state-marker { transition: all 0.3s ease; }
+        .state-marker:hover { transform: scale(1.2); }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-purple-50 min-h-screen">
+    <div id="app" class="w-full max-w-7xl mx-auto p-6">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2 flex items-center justify-center gap-3">
+                <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21l18 0M3 10l18 0M3 7l9-4 9 4M4 10l0 11M20 10l0 11M9 21v-8.5M15 21v-8.5"></path>
+                </svg>
+                Cruise Ship Outbreak Analysis 2024-2025
+            </h1>
+            <p class="text-gray-600">Interactive visualization with social media and hospital tracking</p>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-6 gap-4 mb-8">
+            <div class="stat-card">
+                <div class="flex items-center gap-2 mb-2">
+                    <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                    </svg>
+                    <span class="text-sm text-gray-600">2025 Outbreaks</span>
+                </div>
+                <div class="text-2xl font-bold text-purple-600">19</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="flex items-center gap-2 mb-2">
+                    <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                    </svg>
+                    <span class="text-sm text-gray-600">2024 Outbreaks</span>
+                </div>
+                <div class="text-2xl font-bold text-orange-500">18</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="flex items-center gap-2 mb-2">
+                    <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                    </svg>
+                    <span class="text-sm text-gray-600">2025 Cases</span>
+                </div>
+                <div class="text-2xl font-bold text-purple-600">1,858</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="flex items-center gap-2 mb-2">
+                    <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                    </svg>
+                    <span class="text-sm text-gray-600">Social Reports</span>
+                </div>
+                <div class="text-2xl font-bold text-blue-500">1,058</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="flex items-center gap-2 mb-2">
+                    <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2v16z"></path>
+                    </svg>
+                    <span class="text-sm text-gray-600">Hospital Cases</span>
+                </div>
+                <div class="text-2xl font-bold text-red-500">243</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="flex items-center gap-2 mb-2">
+                    <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                    </svg>
+                    <span class="text-sm text-gray-600">US States</span>
+                </div>
+                <div class="text-2xl font-bold text-green-600">7</div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="flex flex-wrap justify-center gap-2 mb-6">
+            <button onclick="showTab('overview')" id="tab-overview" class="px-4 py-2 rounded-lg font-semibold transition bg-blue-600 text-white">
+                <svg class="inline mr-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                </svg>
+                Overview
+            </button>
+            <button onclick="showTab('social')" id="tab-social" class="px-4 py-2 rounded-lg font-semibold transition bg-white text-gray-700 hover:bg-gray-100">
+                <svg class="inline mr-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                </svg>
+                Social Media
+            </button>
+            <button onclick="showTab('hospitals')" id="tab-hospitals" class="px-4 py-2 rounded-lg font-semibold transition bg-white text-gray-700 hover:bg-gray-100">
+                <svg class="inline mr-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2v16z"></path>
+                </svg>
+                Hospital Reports
+            </button>
+        </div>
+
+        <!-- Overview Tab Content -->
+        <div id="content-overview" class="tab-content">
+            <!-- View Toggle -->
+            <div class="flex justify-center gap-4 mb-6">
+                <button onclick="showView('map')" id="view-map" class="px-6 py-3 rounded-lg font-semibold transition bg-blue-600 text-white">
+                    <svg class="inline mr-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                    </svg>
+                    Outbreak Map
+                </button>
+                <button onclick="showView('chart')" id="view-chart" class="px-6 py-3 rounded-lg font-semibold transition bg-white text-gray-700 hover:bg-gray-100">
+                    <svg class="inline mr-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                    </svg>
+                    Animated Comparison
+                </button>
+            </div>
+
+            <!-- Map View -->
+            <div id="view-map-content" class="view-content">
+                <div class="chart-container">
+                    <h3 class="text-xl font-bold mb-4">Global Outbreak Map 2024-2025</h3>
+                    <div class="relative bg-blue-50 rounded-lg p-4" style="height: 500px;">
+                        <div class="bg-blue-100 rounded-lg w-full h-full relative overflow-hidden">
+                            <!-- Simplified world map with outbreak locations -->
+                            <div class="absolute inset-0">
+                                <!-- Caribbean Region -->
+                                <div class="absolute" style="left: 25%; top: 45%;">
+                                    <div class="outbreak-circle absolute w-8 h-8 bg-purple-600 rounded-full opacity-60 border-2 border-black" style="transform: translate(-50%, -50%);" title="Volendam (2025) - 104 cases"></div>
+                                    <div class="outbreak-circle absolute w-6 h-6 bg-purple-600 rounded-full opacity-60 border-2 border-black" style="transform: translate(20px, -30px);" title="Coral Princess (2025) - 82 cases"></div>
+                                    <div class="outbreak-circle absolute w-10 h-10 bg-orange-500 rounded-full opacity-60 border-2 border-black" style="transform: translate(40px, 10px);" title="Eurodam (2024) - 122 cases"></div>
+                                </div>
+                                
+                                <!-- Mediterranean Region -->
+                                <div class="absolute" style="left: 55%; top: 35%;">
+                                    <div class="outbreak-circle absolute w-7 h-7 bg-purple-600 rounded-full opacity-60 border-2 border-black" style="transform: translate(-50%, -50%);" title="Navigator of the Seas (2025) - 141 cases"></div>
+                                </div>
+                                
+                                <!-- Alaska Region -->
+                                <div class="absolute" style="left: 15%; top: 20%;">
+                                    <div class="outbreak-circle absolute w-9 h-9 bg-purple-600 rounded-full opacity-60 border-2 border-black" style="transform: translate(-50%, -50%);" title="Eurodam (2025) - 170 cases"></div>
+                                </div>
+                                
+                                <!-- Transatlantic Route -->
+                                <div class="absolute" style="left: 40%; top: 40%;">
+                                    <div class="outbreak-circle absolute w-12 h-12 bg-purple-600 rounded-full opacity-60 border-2 border-black" style="transform: translate(-50%, -50%);" title="Queen Mary 2 (2025) - 241 cases"></div>
+                                    <div class="outbreak-circle absolute w-14 h-14 bg-orange-500 rounded-full opacity-60 border-2 border-black" style="transform: translate(60px, 20px);" title="Queen Mary 2 (2024) - 417 cases"></div>
+                                </div>
+                                
+                                <!-- Region Labels -->
+                                <div class="absolute text-sm font-bold" style="left: 25%; top: 45%;">Caribbean</div>
+                                <div class="absolute text-sm font-bold" style="left: 55%; top: 35%;">Mediterranean</div>
+                                <div class="absolute text-sm font-bold" style="left: 15%; top: 20%;">Alaska</div>
+                                <div class="absolute text-sm font-bold" style="left: 40%; top: 40%;">Transatlantic</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Legend -->
+                        <div class="absolute bottom-8 left-8 bg-white p-3 rounded shadow-lg">
+                            <div class="text-sm font-bold mb-2">Outbreak Locations</div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <div class="w-4 h-4 rounded-full bg-purple-600 opacity-60"></div>
+                                <span class="text-xs">2025 Outbreaks</span>
+                            </div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <div class="w-4 h-4 rounded-full bg-orange-500 opacity-60"></div>
+                                <span class="text-xs">2024 Outbreaks</span>
+                            </div>
+                            <div class="text-xs mt-2 text-gray-600">Circle size = case count</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart View -->
+            <div id="view-chart-content" class="view-content hidden">
+                <div class="chart-container">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold">Cumulative Outbreaks Comparison</h3>
+                        <div class="flex gap-2">
+                            <button onclick="startAnimation()" id="play-btn" class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">
+                                Play Animation
+                            </button>
+                            <button onclick="resetAnimation()" class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">
+                                Show All
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Bar Chart Visualization -->
+                    <div class="w-full h-96 bg-gray-50 rounded-lg p-4">
+                        <div class="flex items-end h-80 gap-4 justify-center items-end">
+                            <!-- Bars will be generated by JavaScript -->
+                            <div id="chart-bars" class="flex items-end h-64 gap-4 justify-center items-end w-full"></div>
+                        </div>
+                        <div class="flex justify-between mt-4 text-sm text-gray-600">
+                            <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 text-center text-sm text-gray-600">
+                        Showing data through: <span id="current-month" class="font-bold">Sep</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Social Media Tab Content -->
+        <div id="content-social" class="tab-content hidden">
+            <div class="chart-container fade-in">
+                <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                    <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                    </svg>
+                    Social Media Reports & Public Sentiment
+                </h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Platform Distribution -->
+                    <div>
+                        <h4 class="font-semibold mb-3">Reports by Platform</h4>
+                        <div class="space-y-2">
+                            <div class="platform-bar bg-blue-500" style="width: 45%" title="Twitter: 245 reports">Twitter - 245</div>
+                            <div class="platform-bar bg-blue-600" style="width: 35%" title="Facebook: 189 reports">Facebook - 189</div>
+                            <div class="platform-bar bg-orange-500" style="width: 29%" title="Reddit: 156 reports">Reddit - 156</div>
+                            <div class="platform-bar bg-pink-500" style="width: 18%" title="Instagram: 98 reports">Instagram - 98</div>
+                            <div class="platform-bar bg-red-500" style="width: 38%" title="Cruise Forums: 203 reports">Cruise Forums - 203</div>
+                        </div>
+                    </div>
+
+                    <!-- Timeline -->
+                    <div>
+                        <h4 class="font-semibold mb-3">Reports Timeline</h4>
+                        <div class="bg-gray-50 rounded-lg p-4 h-48">
+                            <div class="flex items-end h-32 gap-2">
+                                <div class="flex-1 bg-blue-500 rounded-t" style="height: 70%"></div>
+                                <div class="flex-1 bg-blue-500 rounded-t" style="height: 50%"></div>
+                                <div class="flex-1 bg-blue-500 rounded-t" style="height: 40%"></div>
+                                <div class="flex-1 bg-blue-500 rounded-t" style="height: 25%"></div>
+                                <div class="flex-1 bg-blue-500 rounded-t" style="height: 60%"></div>
+                                <div class="flex-1 bg-blue-500 rounded-t" style="height: 45%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs text-gray-600 mt-2">
+                                <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>Jul</span><span>Sep</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Reports -->
+                <div class="mt-6">
+                    <h4 class="font-semibold mb-3">Recent Social Media Reports</h4>
+                    <div class="space-y-3 max-h-60 overflow-y-auto">
+                        <div class="border-l-4 border-blue-400 pl-4 py-2 bg-gray-50 rounded">
+                            <div class="flex justify-between items-start">
+                                <span class="font-medium">Twitter</span>
+                                <span class="text-sm text-gray-500">2025-01-15</span>
+                            </div>
+                            <p class="text-sm text-gray-600">Outbreak: Volendam</p>
+                            <div class="flex justify-between items-center mt-1">
+                                <span class="text-sm font-semibold">245 reports</span>
+                                <span class="text-xs px-2 py-1 rounded bg-red-100 text-red-800">negative sentiment</span>
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-blue-400 pl-4 py-2 bg-gray-50 rounded">
+                            <div class="flex justify-between items-start">
+                                <span class="font-medium">Facebook</span>
+                                <span class="text-sm text-gray-500">2025-02-22</span>
+                            </div>
+                            <p class="text-sm text-gray-600">Outbreak: Coral Princess (2)</p>
+                            <div class="flex justify-between items-center mt-1">
+                                <span class="text-sm font-semibold">189 reports</span>
+                                <span class="text-xs px-2 py-1 rounded bg-red-100 text-red-800">negative sentiment</span>
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-blue-400 pl-4 py-2 bg-gray-50 rounded">
+                            <div class="flex justify-between items-start">
+                                <span class="font-medium">Instagram</span>
+                                <span class="text-sm text-gray-500">2025-04-05</span>
+                            </div>
+                            <p class="text-sm text-gray-600">Outbreak: Viking Polaris</p>
+                            <div class="flex justify-between items-center mt-1">
+                                <span class="text-sm font-semibold">98 reports</span>
+                                <span class="text-xs px-2 py-1 rounded bg-yellow-100 text-yellow-800">mixed sentiment</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hospital Reports Tab Content -->
+        <div id="content-hospitals" class="tab-content hidden">
+            <div class="chart-container fade-in">
+                <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2v16z"></path>
+                    </svg>
+                    Hospital Reports - USA
+                </h3>
+
+                <!-- Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-red-50 rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold text-red-600">243</div>
+                        <div class="text-sm text-gray-600">Total Hospital Cases</div>
+                    </div>
+                    <div class="bg-orange-50 rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold text-orange-600">39</div>
+                        <div class="text-sm text-gray-600">Hospitals Involved</div>
+                    </div>
+                    <div class="bg-blue-50 rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold text-blue-600">8</div>
+                        <div class="text-sm text-gray-600">State Reports</div>
+                    </div>
+                    <div class="bg-purple-50 rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold text-purple-600">7</div>
+                        <div class="text-sm text-gray-600">States Affected</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- US Map -->
+                    <div>
+                        <h4 class="font-semibold mb-3">Hospital Cases by State</h4>
+                        <div class="relative bg-blue-50 rounded-lg p-4" style="height: 400px;">
+                            <div class="bg-blue-100 rounded-lg w-full h-full relative">
+                                <!-- Simplified US map with state markers -->
+                                <div class="state-marker absolute w-12 h-12 bg-red-600 rounded-full opacity-70 border-2 border-red-800" style="left: 25%; top: 65%;" title="Florida: 83 cases"></div>
+                                <div class="state-marker absolute w-8 h-8 bg-red-600 rounded-full opacity-70 border-2 border-red-800" style="left: 10%; top: 25%;" title="California: 28 cases"></div>
+                                <div class="state-marker absolute w-9 h-9 bg-red-600 rounded-full opacity-70 border-2 border-red-800" style="left: 35%; top: 50%;" title="Texas: 32 cases"></div>
+                                <div class="state-marker absolute w-6 h-6 bg-red-600 rounded-full opacity-70 border-2 border-red-800" style="left: 65%; top: 30%;" title="New York: 19 cases"></div>
+                                <div class="state-marker absolute w-7 h-7 bg-red-600 rounded-full opacity-70 border-2 border-red-800" style="left: 15%; top: 15%;" title="Washington: 24 cases"></div>
+                                <div class="state-marker absolute w-5 h-5 bg-red-600 rounded-full opacity-70 border-2 border-red-800" style="left: 10%; top: 10%;" title="Alaska: 15 cases"></div>
+                                <div class="state-marker absolute w-6 h-6 bg-red-600 rounded-full opacity-70 border-2 border-red-800" style="left: 30%; top: 70%;" title="Puerto Rico: 22 cases"></div>
+                                
+                                <!-- State labels -->
+                                <div class="absolute text-xs font-bold" style="left: 25%; top: 65%;">FL</div>
+                                <div class="absolute text-xs font-bold" style="left: 10%; top: 25%;">CA</div>
+                                <div class="absolute text-xs font-bold" style="left: 35%; top: 50%;">TX</div>
+                                <div class="absolute text-xs font-bold" style="left: 65%; top: 30%;">NY</div>
+                                <div class="absolute text-xs font-bold" style="left: 15%; top: 15%;">WA</div>
+                                <div class="absolute text-xs font-bold" style="left: 10%; top: 10%;">AK</div>
+                                <div class="absolute text-xs font-bold" style="left: 30%; top: 70%;">PR</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- State Breakdown -->
+                    <div>
+                        <h4 class="font-semibold mb-3">Cases by State</h4>
+                        <div class="space-y-3 max-h-80 overflow-y-auto">
+                            <div class="border-l-4 border-red-400 pl-4 py-3 bg-gray-50 rounded">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-semibold">Florida (FL)</span>
+                                    <span class="text-sm text-gray-500">83 cases</span>
+                                </div>
+                                <div class="text-sm text-gray-600 mt-1">15 hospitals involved</div>
+                                <div class="text-xs text-gray-500 mt-2">Outbreaks: Volendam, Serenade of the Seas</div>
+                            </div>
+                            
+                            <div class="border-l-4 border-red-400 pl-4 py-3 bg-gray-50 rounded">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-semibold">Texas (TX)</span>
+                                    <span class="text-sm text-gray-500">32 cases</span>
+                                </div>
+                                <div class="text-sm text-gray-600 mt-1">6 hospitals involved</div>
+                                <div class="text-xs text-gray-500 mt-2">Outbreaks: Queen Mary 2</div>
+                            </div>
+                            
+                            <div class="border-l-4 border-red-400 pl-4 py-3 bg-gray-50 rounded">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-semibold">California (CA)</span>
+                                    <span class="text-sm text-gray-500">28 cases</span>
+                                </div>
+                                <div class="text-sm text-gray-600 mt-1">5 hospitals involved</div>
+                                <div class="text-xs text-gray-500 mt-2">Outbreaks: Coral Princess (2)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analysis Section -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mt-8">
+            <h2 class="text-2xl font-bold mb-4 text-gray-800">📊 Key Findings & Analysis</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-lg font-semibold mb-3 text-purple-700">2025 Trends</h3>
+                    <ul class="space-y-2 text-sm text-gray-700">
+                        <li class="flex items-start gap-2">
+                            <span class="text-purple-600 font-bold">•</span>
+                            <span><strong>19 total outbreaks</strong> through September (vs 18 in all of 2024)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-purple-600 font-bold">•</span>
+                            <span><strong>Early surge:</strong> 5 outbreaks in January alone (28% of year's total)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-purple-600 font-bold">•</span>
+                            <span><strong>Norovirus dominant:</strong> 15 of 19 outbreaks (79%)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-purple-600 font-bold">•</span>
+                            <span><strong>Largest outbreak:</strong> Queen Mary 2 with 241 cases in March</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold mb-3 text-blue-700">Social Media Impact</h3>
+                    <ul class="space-y-2 text-sm text-gray-700">
+                        <li class="flex items-start gap-2">
+                            <span class="text-blue-600 font-bold">•</span>
+                            <span><strong>1,058 social media reports</strong> tracking outbreak discussions</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-blue-600 font-bold">•</span>
+                            <span><strong>Twitter dominant:</strong> Most reports come from Twitter platform</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-blue-600 font-bold">•</span>
+                            <span><strong>Negative sentiment:</strong> 83% of discussions show concern</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-blue-600 font-bold">•</span>
+                            <span><strong>Real-time tracking:</strong> Social media provides early outbreak detection</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold mb-3 text-red-700">Hospital Impact - USA</h3>
+                    <ul class="space-y-2 text-sm text-gray-700">
+                        <li class="flex items-start gap-2">
+                            <span class="text-red-600 font-bold">•</span>
+                            <span><strong>243 hospital cases</strong> reported across 7 states</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-red-600 font-bold">•</span>
+                            <span><strong>Florida most affected:</strong> Highest number of hospital cases</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-red-600 font-bold">•</span>
+                            <span><strong>Coastal states:</strong> Majority of cases in port states</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-red-600 font-bold">•</span>
+                            <span><strong>Multiple facilities:</strong> Cases distributed across 39 hospitals</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold mb-3 text-orange-600">Geographic Patterns</h3>
+                    <ul class="space-y-2 text-sm text-gray-700">
+                        <li class="flex items-start gap-2">
+                            <span class="text-orange-500 font-bold">•</span>
+                            <span><strong>Caribbean hotspot:</strong> 11 of 19 outbreaks (58%) in Caribbean/South America</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-orange-500 font-bold">•</span>
+                            <span><strong>Winter concentration:</strong> Jan-Mar saw 12 outbreaks (63%)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-orange-500 font-bold">•</span>
+                            <span><strong>US Port Impact:</strong> Florida ports account for 45% of US hospital cases</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded">
+                <h4 class="font-bold text-gray-800 mb-2">⚠️ Enhanced Monitoring Insights</h4>
+                <p class="text-sm text-gray-700">
+                    The integration of social media tracking and hospital reports reveals a comprehensive picture of outbreak impact. 
+                    Social media provides real-time public sentiment and early detection, while hospital data shows the serious health 
+                    consequences. Florida emerges as the most affected US state, with coastal states bearing the brunt of hospital cases. 
+                    The correlation between social media volume and actual hospital cases suggests these platforms can serve as effective 
+                    early warning systems for public health monitoring.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab navigation
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            
+            // Remove active state from all tabs
+            document.querySelectorAll('[id^="tab-"]').forEach(tab => {
+                tab.classList.remove('bg-blue-600', 'text-white');
+                tab.classList.add('bg-white', 'text-gray-700', 'hover:bg-gray-100');
+            });
+            
+            // Show selected tab content
+            document.getElementById('content-' + tabName).classList.remove('hidden');
+            
+            // Set active state on selected tab
+            document.getElementById('tab-' + tabName).classList.remove('bg-white', 'text-gray-700', 'hover:bg-gray-100');
+            document.getElementById('tab-' + tabName).classList.add('bg-blue-600', 'text-white');
+            
+            // Reset view to map when switching to overview
+            if (tabName === 'overview') {
+                showView('map');
+            }
+        }
+
+        // View navigation for overview tab
+        function showView(viewName) {
+            // Hide all view contents
+            document.querySelectorAll('.view-content').forEach(view => {
+                view.classList.add('hidden');
+            });
+            
+            // Remove active state from all view buttons
+            document.querySelectorAll('[id^="view-"]').forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white');
+                btn.classList.add('bg-white', 'text-gray-700', 'hover:bg-gray-100');
+            });
+            
+            // Show selected view content
+            document.getElementById('view-' + viewName + '-content').classList.remove('hidden');
+            
+            // Set active state on selected view button
+            document.getElementById('view-' + viewName).classList.remove('bg-white', 'text-gray-700', 'hover:bg-gray-100');
+            document.getElementById('view-' + viewName).classList.add('bg-blue-600', 'text-white');
+            
+            // Initialize chart if showing chart view
+            if (viewName === 'chart') {
+                initializeChart();
+            }
+        }
+
+        // Chart animation functionality
+        let animationInterval;
+        let currentMonth = 8; // September (0-indexed)
+
+        const monthlyData = [
+            { month: 'Jan', 2025: 5, 2024: 1 },
+            { month: 'Feb', 2025: 9, 2024: 2 },
+            { month: 'Mar', 2025: 12, 2024: 3 },
+            { month: 'Apr', 2025: 15, 2024: 5 },
+            { month: 'May', 2025: 15, 2024: 6 },
+            { month: 'Jun', 2025: 15, 2024: 6 },
+            { month: 'Jul', 2025: 16, 2024: 6 },
+            { month: 'Aug', 2025: 16, 2024: 6 },
+            { month: 'Sep', 2025: 17, 2024: 7 }
+        ];
+
+        function initializeChart() {
+            renderChart();
+        }
+
+        function renderChart() {
+            const chartBars = document.getElementById('chart-bars');
+            chartBars.innerHTML = '';
+            
+            for (let i = 0; i <= currentMonth; i++) {
+                const data = monthlyData[i];
+                const maxHeight = 200; // Maximum bar height in pixels
+                
+                const barContainer = document.createElement('div');
+                barContainer.className = 'flex flex-col items-center h-64';
+                
+                // 2025 bar
+                const bar2025 = document.createElement('div');
+                bar2025.className = 'w-8 bg-purple-600 rounded-t transition-all duration-500';
+                bar2025.style.height = `${(data[2025] / 17) * maxHeight}px`;
+                bar2025.title = `2025: ${data[2025]} outbreaks`;
+                
+                // 2024 bar
+                const bar2024 = document.createElement('div');
+                bar2024.className = 'w-8 bg-orange-500 rounded-t transition-all duration-500 mt-2';
+                bar2024.style.height = `${(data[2024] / 17) * maxHeight}px`;
+                bar2024.title = `2024: ${data[2024]} outbreaks`;
+                
+                barContainer.appendChild(bar2025);
+                barContainer.appendChild(bar2024);
+                chartBars.appendChild(barContainer);
+            }
+            
+            document.getElementById('current-month').textContent = monthlyData[currentMonth].month;
+        }
+
+        function startAnimation() {
+            const playBtn = document.getElementById('play-btn');
+            playBtn.disabled = true;
+            playBtn.textContent = 'Playing...';
+            
+            currentMonth = 0;
+            renderChart();
+            
+            animationInterval = setInterval(() => {
+                currentMonth++;
+                renderChart();
+                
+                if (currentMonth >= 8) {
+                    clearInterval(animationInterval);
+                    playBtn.disabled = false;
+                    playBtn.textContent = 'Play Animation';
+                }
+            }, 800);
+        }
+
+        function resetAnimation() {
+            clearInterval(animationInterval);
+            currentMonth = 8;
+            renderChart();
+            
+            const playBtn = document.getElementById('play-btn');
+            playBtn.disabled = false;
+            playBtn.textContent = 'Play Animation';
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            showTab('overview');
+            showView('map');
+        });
+    </script>
+</body>
+</html>
